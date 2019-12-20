@@ -79,42 +79,41 @@ if(!$_SESSION)
             catch(PDOException $e)
             {
                 echo $e->getMessage();
-
             }
         ?>
     <div style="text-align:left; margin: 2%"> 
-    
-    <div class="video-wrap">
+    <form style="text-align: right" action="" method="GET">
+    <input style="background-color:red; color:white; border-radius: 20px; width:80px" type="submit" name="camera" value="Camera" >
+    </form>
+    <?php
+    if(isset($_GET["camera"]))
+    {
+        echo '<div class="video-wrap">
         <video id="video" autoplay></video>
         <button id="snap">Capture</button>
         <canvas id="canvas" width="200" height="100"></canvas>
-    </div></a>
-    <form action="savecam.php" method="Post">
+        </div> ';
+
+        echo '<form action="savecam.php" method="Post">
         <input type="hidden" id="image" name="img">
         <button onclick="save()" id="submit" name="upload"><h2>Save</h2></button>
-    </form>
+    </form>';
+    }  
+    ?>
     <div class="scrollmenu">
         <?php 
                             $sql = "SELECT * FROM webcamimage WHERE update_userId = $user_id ";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute();
-        
-                            if($row = $stmt->fetch())
+                            $row = $stmt->fetch();
+
+                            $i = 0;
+                            $len = count($row);
+
+                            while($i < $len)
                             {
                                 echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
-                                echo '<img  width="120" height="100" src="upload/'.$row['imgfullNameCam'].' ">';
+                                
                             }  
         ?>
     </div>    
@@ -165,7 +164,7 @@ if(!$_SESSION)
             }?></div>
         <input   style="background-color:dodgerblue; color:white; border-radius: 20px;" type ="submit" name="update" value="UPDATE PROFILE">
     </form>
-        </div>
+</div>
 
 </body>
 
