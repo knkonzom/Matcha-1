@@ -3,7 +3,7 @@
 if(isset($_POST['submit']))
 {
     session_start();
-   $user = $_SESSION['userUid'];
+   $user = $_SESSION['newusername'];
    $tt = $_SESSION['userEmail'];
    $userId = $_SESSION['userId'];
 
@@ -60,6 +60,7 @@ if(isset($_POST['submit']))
                         echo $img = $_SESSION['image_user'];
                         echo $result['imgfullNameCam'];
                         header("location: ../UsersProfile.php?upload=success");
+                        
                      }
                     catch(PDOException $e)
                     {

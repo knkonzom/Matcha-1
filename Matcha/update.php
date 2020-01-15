@@ -1,6 +1,8 @@
+
 <?php  
 session_start();
  $usr_id = $_SESSION['userId'];
+
 
 if(isset($_POST['update']))
 {
@@ -17,8 +19,14 @@ if(isset($_POST['update']))
     $Oldpwd = $_POST['old-pwd'];
     $Newpwd = $_POST['new-pwd'];
     $RepeatNewPwd = $_POST['repeat-new-pwd'];
+  $age = $_POST['age'];
+
+    $str = file_get_contents('https://geolocation-db.com/json/');
+    $json = json_decode($str, true);
+    $newcity = $json["city"];
+    // echo $newcity;
+    // exit();
     
-  
     if(empty($Oldpwd))
     {        
         header("location: UsersProfile.php?error=entercurrentpwd");
@@ -65,8 +73,9 @@ if(isset($_POST['update']))
                 }
                 else if($oldpwdCheck === true)
                 {
-                     $verifyID = $row['UsersId'];
-                     
+                    $verifyID = $row['UsersId'];
+                    $newuser = $row['username'];
+                    
                     if($Username)
                     {
                         $sql = "UPDATE users SET  username=? WHERE UsersId='$usr_id'";
@@ -81,19 +90,33 @@ if(isset($_POST['update']))
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
                         $_SESSION['newusername'] =  $row['username'];
                         echo $_SESSION['newusername'];
+                        
 
                         $sql = "SELECT * FROM webcamimage WHERE update_userId='$usr_id' ";
                         $stmt = $conn->prepare($sql);
                         $stmt->execute();
                         $res = $stmt->rowCount();
-                       
+                    
                         if($res > 0)
                         {
                                 $sql = "UPDATE webcamimage SET username='{$_SESSION['newusername']}' WHERE update_userId='$usr_id'  ";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->execute();                          
+                                $stmt->execute();                               
                         }
- 
+
+                        $sql = "SELECT * FROM profileupdate WHERE update_userId='$usr_id' ";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute();
+                        $res = $stmt->rowCount();
+                    
+                        if($res > 0)
+                        {
+                                $sql = "UPDATE profileupdate SET username='{$_SESSION['newusername']}' WHERE update_userId='$usr_id'  ";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();                               
+                        }
+
+
                     }
                     else if($Email)
                     {
@@ -114,12 +137,13 @@ if(isset($_POST['update']))
                         $stmt = $conn->prepare($sql);
                         $stmt->execute();
                         $res = $stmt->rowCount();
-                       
+                    
                         if($res > 0)
                         {
                                 $sql = "UPDATE webcamimage SET userEmail='{$_SESSION['newuseremail']}' WHERE update_userId='$usr_id'  ";
                                 $stmt = $conn->prepare($sql);
-                                $stmt->execute();                          
+                                $stmt->execute();  
+                                 
                         }
                     }
                     else if($lastNam)
@@ -129,7 +153,7 @@ if(isset($_POST['update']))
                         $stmt->bindParam(1, $lastNam);
                         $stmt->execute();
                     }
-                    else if($firstName )
+                    else if($firstName)
                     {
                         $sql = "UPDATE users SET  usersFirstName=? WHERE UsersId='$usr_id'";
                         $stmt = $conn->prepare($sql);
@@ -145,41 +169,92 @@ if(isset($_POST['update']))
                         $stmt->bindParam(1, $newPwdHash);
                         $stmt->execute();
                     }
+                    // else if($inter)
+                    // {
+                    //     try
+                    //     {
+                    //         $sql = "INSERT INTO interests (interest_userId, InterestDescription, username) VALUES ('{$verifyID}', '{$inter}', '{$newuser}' ) ";
+                    //         $stm = $conn->prepare($sql);
+                    //         $stm->execute();
+                    //     }
+                    //     catch(PDOException $e)
+                    //     {
+                    //         echo $e->getMessage();
+                    //     }
+                    // } 
                     else
                     {  
-                        
-                        $sql = "SELECT * FROM profileupdate WHERE update_userId = $verifyID";
-                        $stmt = $conn->prepare($sql);
-                        $stmt->execute();
-                        $res = $stmt->rowCount();
-                        if($res > 0)
-                        {
-                            if($aboutme)
-                            {
-                                $sql = "UPDATE profileupdate SET AboutMe='$aboutme' WHERE update_userId='$usr_id'  ";
-                                $stmt = $conn->prepare($sql);
-                                $stmt->execute();
-                            }
+                            $sql = "SELECT update_userID FROM profileupdate WHERE update_userId = '$verifyID' ";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->execute();
 
-                        }
-                        else
-                        {
+                            $res = $stmt->rowCount();
+                            if($res > 0)
+                            {
+                              
+
+                                if($aboutme)
+                                {
+                                    $sql = "UPDATE profileupdate SET AboutMe='$aboutme' WHERE update_userId='$usr_id'  ";
+                                    $stmt = $conn->prepare($sql);
+                                    $stmt->execute();                                                                  
+                                }
+                                if($gender)
+                                {
+                                        $sql = "UPDATE profileupdate SET Gender='$gender' WHERE update_userId='$usr_id'  ";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute();
+                                    
+                                }
+                                if($sex_pref)
+                                {
+                                        $sql = "UPDATE profileupdate SET sexualPreference='$sex_pref' WHERE update_userId='$usr_id'  ";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute();                   
+                                }
+                                if($age)
+                                {
+                                        $sql = "UPDATE profileupdate SET Age='$age' WHERE update_userId='$usr_id'  ";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute(); 
+                        
+                                }
+                
+                                
+                            } 
+                            else
+                            {
                                 try
-                                {               
-                                    $sql2 = "INSERT INTO profileupdate (update_userId, AboutMe, Gender, sexualPreference, Interest) VALUES ('{$verifyID}', '{$aboutme}', '{$gender}', '{$sex_pref}', '{$inter}')  ";
+                                {            
+                                    $sql2 = "INSERT INTO profileupdate (update_userId, AboutMe, Gender, sexualPreference, username, `Location`, Age) VALUES ('{$verifyID}', '{$aboutme}', '{$gender}', '{$sex_pref}', '{$newuser}', '{$newcity}', '{$age}') ";
                                     $stm = $conn->prepare($sql2);
                                     $stm->execute();
                                 }
                                 catch(PDOException $e)
                                 {
                                     echo $e->getMessage();
-                                }
-
-                        }  
+                                }  
+                            }    
+                            if($inter)
+                            {
+                               
+                                    try
+                                    {
+                                        $sql = "INSERT INTO interests (interest_userId, InterestDescription, username) VALUES ('{$verifyID}', '{$inter}', '{$newuser}' ) ";
+                                        $stm = $conn->prepare($sql);
+                                        $stm->execute();
+                                    }
+                                    catch(PDOException $e)
+                                    {
+                                        echo $e->getMessage();
+                                    }
+                                    header("location: UsersProfile.php?interest=updated");
+                                    exit();
+                            } 
                     }
+
                      header("location: UsersProfile.php?updatesuccess=updated");
-                    exit();
-                    
+                    exit();               
                 }
                 else
                 {
@@ -195,10 +270,11 @@ if(isset($_POST['update']))
         $conn = null;
        
     }
-
 }
 else
 {
     header("location: ../index.php");
     exit();
 }
+?>
+

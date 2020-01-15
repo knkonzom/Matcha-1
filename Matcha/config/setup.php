@@ -32,7 +32,9 @@
         `AboutMe` VARCHAR(255) NOT NULL,
         `Gender` VARCHAR(255) NOT NULL,
         `sexualPreference` VARCHAR(255) NOT NULL,
-        `Interest` VARCHAR(255) NOT NULL,
+        `username` VARCHAR(255) NOT NULL,
+        `Location` VARCHAR(255) NOT NULL,
+        `Age` VARCHAR(255) NOT NULL,
         FOREIGN KEY (update_userId) REFERENCES users(UsersId)
       )";
       $conn->exec($sql);
@@ -70,8 +72,12 @@
 
         $sql = "CREATE TABLE IF NOT EXISTS `Interests` 
         (
-            InterestId INTEGER PRIMARY KEY,
-            InterestDescription VARCHAR(500) NOT NULL
+           
+            InterestId INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
+            `interest_userId` INT NOT NULL,
+            InterestDescription VARCHAR(500) NOT NULL,
+            username VARCHAR(255) NOT NULL,
+            FOREIGN KEY (interest_userId) REFERENCES users(UsersId)
         )";
         $conn->exec($sql);
         
