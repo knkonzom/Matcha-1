@@ -1,6 +1,11 @@
 <?php
 
-if(isset($_POST['upload']))
+if(empty($_POST['upload']))
+{
+    header("location: UsersProfile.php?error=emptyimage");
+    exit();
+}
+else 
 {
     
     $upload_dir = 'upload/';
@@ -12,7 +17,7 @@ if(isset($_POST['upload']))
     
     if(empty($_POST['img']))
     {
-        header("location: HomePage.php?error=emptyimage");
+        header("location: UsersProfile.php?error=emptyimage");
         exit();
     }
     else
@@ -37,7 +42,7 @@ if(isset($_POST['upload']))
             $setImageOrder = $result + 1;
 
             
-            $sql = "INSERT INTO webcamimage (update_userId, imgfullNameCam, username, userEmail, likes_count, orderCamImage) VALUES ('{$userId }', '{$newdata}', '{$user}', '{$tt}', 0, '{$setImageOrder}')";
+            $sql = "INSERT INTO webcamimage (update_userId, imgfullNameCam, username, userEmail, likes_count, orderCamImage) VALUES ('{$userId }', '{$newdata}', '{$_SESSION['userUid']}', '{$tt}', 0, '{$setImageOrder}')";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             file_put_contents($file, $data);
@@ -64,7 +69,7 @@ if(isset($_POST['upload']))
         $conn = null;
     }
 }
-else 
-{
-    echo "You have an error";
-}
+// else 
+// {
+//     echo "You have an error";
+// }

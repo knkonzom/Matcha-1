@@ -60,10 +60,10 @@ if(isset($_POST['update']))
             $sql = " SELECT * FROM users WHERE UsersId = '$usr_id' ";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-
+            echo "$usr_id";
             if($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
-              
+               
                  $oldpwdCheck = password_verify($Oldpwd, $row["usersPassword"]);
                 if($oldpwdCheck === false)
                 {
@@ -73,6 +73,7 @@ if(isset($_POST['update']))
                 }
                 else if($oldpwdCheck === true)
                 {
+                    
                     $verifyID = $row['UsersId'];
                     $newuser = $row['username'];
                     
@@ -169,19 +170,6 @@ if(isset($_POST['update']))
                         $stmt->bindParam(1, $newPwdHash);
                         $stmt->execute();
                     }
-                    // else if($inter)
-                    // {
-                    //     try
-                    //     {
-                    //         $sql = "INSERT INTO interests (interest_userId, InterestDescription, username) VALUES ('{$verifyID}', '{$inter}', '{$newuser}' ) ";
-                    //         $stm = $conn->prepare($sql);
-                    //         $stm->execute();
-                    //     }
-                    //     catch(PDOException $e)
-                    //     {
-                    //         echo $e->getMessage();
-                    //     }
-                    // } 
                     else
                     {  
                             $sql = "SELECT update_userID FROM profileupdate WHERE update_userId = '$verifyID' ";
@@ -237,6 +225,7 @@ if(isset($_POST['update']))
                             }    
                             if($inter)
                             {
+                                echo "jhfg";
                                
                                     try
                                     {
@@ -248,8 +237,7 @@ if(isset($_POST['update']))
                                     {
                                         echo $e->getMessage();
                                     }
-                                    header("location: UsersProfile.php?interest=updated");
-                                    exit();
+                                    
                             } 
                     }
 

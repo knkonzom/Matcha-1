@@ -1,16 +1,15 @@
 <?php
 session_start();
 
-$user_id = $_SESSION['publicprofile'];
-$id_user = $_SESSION['update_id'];
+$user_id = $_SESSION['userUid'];
+$id_user = $_SESSION['userId'];
 $aboutme = $_SESSION['about'];
 $gender = $_SESSION['gender'];
 $sexpref = $_SESSION['sexpref'];
 
 function gender() 
 {
-    //   session_start();
-    $user_id = $_SESSION['publicprofile'];
+    $user_id = $_SESSION['userUid'];
     include "config/database.php";
 
     try
@@ -29,9 +28,9 @@ function gender()
         echo $e->getMessage();
     }
 }
-    function sexpref() {
-        //   session_start();
-        $user_id = $_SESSION['publicprofile'];
+    function sexpref() 
+    {
+        $user_id = $_SESSION['userUid'];
         include "config/database.php";
         try
         {
@@ -49,9 +48,9 @@ function gender()
             echo $e->getMessage();
         }
     }
-    function aboutme() {
-        //  session_start();
-        $user_id = $_SESSION['publicprofile'];
+    function aboutme() 
+    {
+        $user_id = $_SESSION['userUid'];
         include "config/database.php";
         try
         {
@@ -68,9 +67,9 @@ function gender()
             echo $e->getMessage();
         }
     }
-    function Age() {
-        //  session_start();
-        $user_id = $_SESSION['publicprofile'];
+    function Age() 
+    {
+        $user_id = $_SESSION['userUid'];
         include "config/database.php";
     
         try
@@ -89,9 +88,9 @@ function gender()
             echo $e->getMessage();
         }
     }
-    function interest() {
-        //  session_start();
-        $id_user = $_SESSION['update_id'];
+    function interest() 
+    {
+        $id_user = $_SESSION['userId'];;
         include "config/database.php";
         try
         {
@@ -130,9 +129,10 @@ function gender()
 <div class="header">
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
-    <a class="active" href="index.php">Home</a>
+    <a class="active" href="UsersProfile.php">Home</a>
     <a class="active" href="index.php">Follow</a>
   </div>
+
   <?php
             include "config/database.php";
                 try
@@ -152,7 +152,7 @@ function gender()
                 }
     ?>
   <div style="text-align: center; margin: 1%">
-  <h2><?php $user = $_SESSION['publicprofile']; echo "<p><h1> $user Profile</h1></p>";?></h2>
+  <h2><?php $user = $_SESSION['userUid']; echo "<p><h1> $user Profile</h1></p>";?></h2>
   <form action="like.php" method="POST">
     <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like profile</button>
   </form>

@@ -12,10 +12,10 @@
   <div class="header-right">
     <a class="active" href="signup.php">SignUp</a>
   </div>
-  <form action="search.php" method="POST">
+  <!-- <form action="search.php" method="POST">
   <input type="text" name="search" placeholder="Search Profile" />
   <button type="submit" name="SearchUser">search</button>
-  </form>
+  </form> -->
 </div>
 
 <div style="text-align: center; margin: 10%">

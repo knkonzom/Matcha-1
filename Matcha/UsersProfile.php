@@ -4,9 +4,39 @@ session_start();
 if(!$_SESSION)
 {
     header("location: index.php?error=needtologin");
-} else 
+} 
+else 
 {
     $user_id = $_SESSION['userId'];
+    
+    function interest() 
+    {
+        $user_id = $_SESSION['userId'];
+        $id_user = $_SESSION['update_id'];
+        include "config/database.php";
+        try
+        {
+            $sql = "SELECT InterestDescription FROM interests WHERE interest_userId='{$user_id}' ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $res = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $arr = array_unique($res);
+
+            $i = 0;
+            $len = count($arr);
+            while($i < $len)
+            {
+                
+                echo '<a class"active" >'.$arr[$i].'</a>';
+                echo "&nbsp&nbsp";
+                $i++;
+            }
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,37 +48,65 @@ if(!$_SESSION)
 </head>
 <body>
 <div class="header">
-  <h1 class="logo">Matcha</h1>
+  <h1 class="logo">Matcha</h1>                                                                                                                                                                                                                                                      
   <div class="header-right">
+  <?php
+        
+        include "config/database.php";
+            try
+            {
+                $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId = $user_id ORDER BY idCamImage DESC ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                $sql = "SELECT Location FROM profileupdate WHERE update_userId = $user_id ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $location = $stmt->fetch(PDO::FETCH_ASSOC); 
+                
+                $sql = "SELECT AboutMe FROM profileupdate WHERE update_userId = $user_id ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $aboutme = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+            }
+?>
+<?php
+        if($row && $location && $aboutme)
+        { 
+            echo '<a class="active" href="browseProfile.php">Browse</a> ';
+        }
+  ?>
     <a class="active" href="PublicProfile.php">Profile</a>
     <a class="active" href="includes/logout.inc.php">Log Out</a>
     <a class="active" href="Profile_upload.php">Edit Profile Photo</a> 
   </div>
-  
   <?php
-            include "config/database.php";
-                try
-                {
-                    $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId = $user_id ORDER BY idCamImage DESC ";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute();
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                    if($row)
-                    { 
-                       echo '<img  width="120" height="120" src="upload/'.$row['imgfullNameCam'].' ">';
-                    }
-                }
-                catch(PDOException $e)
-                {
-                    echo $e->getMessage();
-                }
-    ?>
-       <form action="search.php" method="POST">
-  <input style="width:130px" type="text" name="search" placeholder="Search Profile" />
-  <button style="height:40px;border-radius:4px; background-color:dodgerblue;" type="submit" name="SearchUser">search</button>
-  </form>
+        if($row && $location && $aboutme)
+        { 
+            echo '<img  width="120" height="120" src="upload/'.$row['imgfullNameCam'].' ">';
+        }
+  ?>
   <div style="text-align: center; margin: 1%">
-  <h2><?php $user = $_SESSION['userUid']; echo "<p><h1>Welcome $user</h1></p>";?></h2>
+  <h2><?php $user = $_SESSION['userUid']; echo "<p><h1>Welcome $user</h1></p>";?><br/>
+  <?php 
+        if($row && $location && $aboutme) 
+        { 
+           
+            echo "<p><h5>You are now connected, click browse above!</h5></p>" ;
+        } 
+        else
+        {
+            // echo "<p><h5>You need to upload profile photo and complete your information to connect with other users!</h5></p>" ;
+            echo "<p><h5>upload profile photo and complete your profile to connect with other users!</h5></p>" ;
+        }
+    ?> 
+</h2>
     </div>
 </div>
 <body>
@@ -96,6 +154,7 @@ if(!$_SESSION)
     {
         echo '<div class="video-wrap">
         <video id="video" autoplay></video>
+        <form action="savecam.php" method="Post">
         <button id="snap">Capture</button>
         <canvas id="canvas" width="200" height="100"></canvas>
         </div> ';
@@ -108,19 +167,19 @@ if(!$_SESSION)
     ?>
     <div class="scrollmenu">
         <?php 
-                            $sql = "SELECT * FROM webcamimage WHERE update_userId = $user_id ORDER BY idCamImage DESC ";
-                            $stmt = $conn->prepare($sql);
-                            $stmt->execute();
-                            $row = $stmt->fetchAll();
+               $sql = "SELECT * FROM webcamimage WHERE update_userId = $user_id ORDER BY idCamImage DESC ";
+               $stmt = $conn->prepare($sql);
+               $stmt->execute();
+               $row = $stmt->fetchAll();
 
-                            $i = 0;
-                            $len = count($row);
+               $i = 0;
+               $len = count($row);
 
-                            while($i < $len)
-                            {
-                                echo ' <img  width="120" height="100" src="upload/'.$row[$i]['imgfullNameCam'].' ">';
-                                $i++;
-                            }  
+               while($i < $len)
+               {
+                   echo ' <img  width="120" height="100" src="upload/'.$row[$i]['imgfullNameCam'].' ">';
+                   $i++;
+               }               
         ?>
     </div>    
     <h3>Personal Info</h3>
@@ -159,39 +218,23 @@ if(!$_SESSION)
         <input type ="password" name="new-pwd" placeholder="Enter New Password"/><br/>
         <input type ="password" name="repeat-new-pwd" placeholder="Confirm New Password"/><br/>
         <!-- <input type="hidden" name="love" value="mysave()"> -->
-        <div style=" text-align:left;"> Current location: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php   try
+        <div style=" text-align:left;"> Current location: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php
             {
-                    $sql = "SELECT Location FROM profileupdate WHERE update_userId = $user_id ";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute();
-        
-                    if($row = $stmt->fetch(PDO::FETCH_ASSOC))
-                    {
-                        echo $row['Location'];
-                    }                  
+                if($location)
+                {
+                    echo $location['Location'];
+                }                   
             }
-            catch(PDOException $e)
+            ?></div>
+        <div style=" text-align:left;"> AboutMe: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php 
             {
-                echo $e->getMessage();
-
-            }?></div>
-        <div style=" text-align:left;"> AboutMe: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php   try
-            {
-                    $sql = "SELECT AboutMe FROM profileupdate WHERE update_userId = $user_id ";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute();
-        
-                    if($row = $stmt->fetch(PDO::FETCH_ASSOC))
-                    {
-                        echo $row['AboutMe'];
-                    }
-                    
+                if($aboutme)
+                {
+                    echo $aboutme['AboutMe'];
+                }    
             }
-            catch(PDOException $e)
-            {
-                echo $e->getMessage();
-
-            }?></div>
+           ?></div>
+            <div style=" text-align:left;"> My interest: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php interest();?> </div>
         <input   style="background-color:dodgerblue; color:white; border-radius: 20px;" type ="submit" name="update" value="UPDATE PROFILE">
     </form>
 </div>
