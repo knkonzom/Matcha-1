@@ -43,6 +43,7 @@ if(isset($_POST['Submit-Login']))
                             header("location: ../index.php?error=notverified");
                             exit();
                         }
+                    
                         header("location: ../UsersProfile.php?login=loginsuccess");
                     }
                     else

@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="footer">
-        <p style="color:black">&copy 2019 matcha from Bolaleka</p>
+        <p style="color:black">&copy 2020</p>
     </div>
 </body>
 </html>

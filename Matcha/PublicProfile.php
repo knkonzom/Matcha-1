@@ -2,10 +2,11 @@
 session_start();
 
 $user_id = $_SESSION['userUid'];
-$id_user = $_SESSION['userId'];
-$aboutme = $_SESSION['about'];
-$gender = $_SESSION['gender'];
-$sexpref = $_SESSION['sexpref'];
+
+// $id_user = $_SESSION['userId'];
+// $aboutme = $_SESSION['about'];
+// $gender = $_SESSION['gender'];
+// $sexpref = $_SESSION['sexpref'];
 
 function gender() 
 {
@@ -94,18 +95,20 @@ function gender()
         include "config/database.php";
         try
         {
-            $sql = "SELECT InterestDescription FROM interests WHERE interest_userId='{$id_user}' ";
+            $sql = "SELECT int_1, int_2, int_3, int_4, int_5, int_6, int_7, int_8  FROM interests WHERE interest_userId='{$id_user}' ";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            $res = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            $arr = array_unique($res);
+            $res = $stmt->fetch();
+
+            // var_dump($res);
+            // $arr = array_unique($res);
 
             $i = 0;
-            $len = count($arr);
+            $len = count($res);
             while($i < $len)
             {
                 
-                echo '<a class"active" >'.$arr[$i].'</a>';
+                echo '<a style="" >'.$res[$i].'</a>';
                 echo "&nbsp&nbsp";
                 $i++;
             }
@@ -130,14 +133,14 @@ function gender()
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
     <a class="active" href="UsersProfile.php">Home</a>
-    <a class="active" href="index.php">Follow</a>
+    <a class="active" href="index.php">Fame</a>
   </div>
 
   <?php
             include "config/database.php";
                 try
                 {
-                    $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '$id_user' ORDER BY idCamImage DESC ";
+                    $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC ";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -150,6 +153,15 @@ function gender()
                 {
                     echo $e->getMessage();
                 }
+                if($_SESSION)
+                {
+                    
+                    echo '<p style=" color:green">online</p>';
+                }
+                else
+                {
+                    echo "last seen " . date("h:i:sa");
+                }
     ?>
   <div style="text-align: center; margin: 1%">
   <h2><?php $user = $_SESSION['userUid']; echo "<p><h1> $user Profile</h1></p>";?></h2>
@@ -161,11 +173,12 @@ function gender()
 <body>
 <div class="scrollmenu">
         <?php 
-                            $sql = "SELECT * FROM webcamimage WHERE username = '$user_id' ORDER BY idCamImage DESC ";
+                            $sql = "SELECT * FROM webcamimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC ";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute();
                             $row = $stmt->fetchAll();
-
+                            
+                           
                             $i = 0;
                             $len = count($row);
 

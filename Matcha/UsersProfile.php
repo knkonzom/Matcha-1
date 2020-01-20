@@ -12,7 +12,7 @@ else
     function interest() 
     {
         $user_id = $_SESSION['userId'];
-        $id_user = $_SESSION['update_id'];
+        
         include "config/database.php";
         try
         {
@@ -91,6 +91,15 @@ else
         { 
             echo '<img  width="120" height="120" src="upload/'.$row['imgfullNameCam'].' ">';
         }
+        
+        if($_SESSION)
+        {
+            echo '<p style=" color:green">online</p>';
+        }
+        else
+        {
+            echo "last seen" . date("h:i:sa");
+        }
   ?>
   <div style="text-align: center; margin: 1%">
   <h2><?php $user = $_SESSION['userUid']; echo "<p><h1>Welcome $user</h1></p>";?><br/>
@@ -143,28 +152,15 @@ else
             {
                 echo $e->getMessage();
             }
+
         ?>
-    <div style="text-align:left; margin: 2%"> 
-    <form style="text-align: right" action="" method="GET">
-    <input style="background-color:red; color:white; border-radius: 20px; width:80px" type="submit" name="camera" value="Camera" >
-    </form>
 
-    <?php
-    if(isset($_GET["camera"]))
-    {
-        echo '<div class="video-wrap">
-        <video id="video" autoplay></video>
-        <form action="savecam.php" method="Post">
-        <button id="snap">Capture</button>
-        <canvas id="canvas" width="200" height="100"></canvas>
-        </div> ';
-
-        echo '<form action="savecam.php" method="Post">
-        <input type="hidden" id="image" name="img">
-        <button onclick="save()" id="submit" name="upload"><h2>Save</h2></button>
-    </form>';
-    }   
-    ?>
+    <form action="savecam.php" method="POST" enctype="multipart/form-data">
+       
+            <input type="hidden" name="filename" >
+            <input type="file" name="file" >
+            <button type="submit"  name="submit">UPLOAD</button>
+  </form> 
     <div class="scrollmenu">
         <?php 
                $sql = "SELECT * FROM webcamimage WHERE update_userId = $user_id ORDER BY idCamImage DESC ";
@@ -202,14 +198,15 @@ else
         <option value="Bisexual">Bisexual</option>
         <option value="Homosexual">Homosexual</option> 
         </select><br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My interest:<br/>    
+        <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;My interest:<br/>    
         <select type="text" name="interest">
         <option value="">select interest</option>
         <option value="#Volvo">#Volvo</option>
         <option value="#Saab">#Saab</option>
         <option value="#Opel">#Opel</option>
         <option value="#Audi">#Audi</option>
-        </select><br/>
+        </select><br/> -->
+
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select Age:<br/>  
         <select type="text" name="age">
             <option value="">select age</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option><option value="60">60</option><option value="61">61</option><option value="62">62</option><option value="63">63</option><option value="64">64</option><option value="65">65</option><option value="66">66</option><option value="67">67</option><option value="68">68</option><option value="69">69</option><option value="70">70</option><option value="71">71</option><option value="72">72</option><option value="73">73</option><option value="74">74</option><option value="75">75</option><option value="76">76</option><option value="77">77</option><option value="78">78</option><option value="79">79</option><option value="80">80</option><option value="81">81</option><option value="82">82</option><option value="83">83</option><option value="84">84</option><option value="85">85</option><option value="86">86</option><option value="87">87</option><option value="88">88</option><option value="89">89</option><option value="90">90</option><option value="91">91</option><option value="92">92</option><option value="93">93</option><option value="94">94</option><option value="95">95</option><option value="96">96</option><option value="97">97</option><option value="98">98</option><option value="99">99</option><option value="100">100</option>
@@ -217,24 +214,14 @@ else
         <input type ="password" name="old-pwd" placeholder="Enter current Password"/><br/>
         <input type ="password" name="new-pwd" placeholder="Enter New Password"/><br/>
         <input type ="password" name="repeat-new-pwd" placeholder="Confirm New Password"/><br/>
-        <!-- <input type="hidden" name="love" value="mysave()"> -->
-        <div style=" text-align:left;"> Current location: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php
-            {
-                if($location)
-                {
-                    echo $location['Location'];
-                }                   
-            }
-            ?></div>
-        <div style=" text-align:left;"> AboutMe: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php 
-            {
-                if($aboutme)
-                {
-                    echo $aboutme['AboutMe'];
-                }    
-            }
-           ?></div>
-            <div style=" text-align:left;"> My interest: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?php interest();?> </div>
+        <input type="checkbox" name="int_1" value="#Bike">&nbsp;&nbsp;#Bike&nbsp;&nbsp;
+        <input type="checkbox" name="int_2" value="#Car">&nbsp;&nbsp;#Car&nbsp;&nbsp;
+        <input type="checkbox" name="int_3" value="#Sport">&nbsp;&nbsp;#Sport&nbsp;&nbsp;
+        <input type="checkbox" name="int_4" value="#Game">&nbsp;&nbsp;#Game&nbsp;&nbsp;
+        <input type="checkbox" name="int_5" value="#Read">&nbsp;&nbsp;#Read&nbsp;&nbsp;
+        <input type="checkbox" name="int_6" value="#Fight">&nbsp;&nbsp;#Fight&nbsp;&nbsp;
+        <input type="checkbox" name="int_7" value="#Music">&nbsp;&nbsp;#Music&nbsp;&nbsp;
+        <input type="checkbox" name="int_8" value="#Boat">#Boat<br/>
         <input   style="background-color:dodgerblue; color:white; border-radius: 20px;" type ="submit" name="update" value="UPDATE PROFILE">
     </form>
 </div>
@@ -246,54 +233,3 @@ else
 }
 ?>
 
-<script>
-      
-      'use strict';
-      
-      const video = document.getElementById('video');
-      const canvas = document.getElementById('canvas');
-      const snap = document.getElementById('snap');
-      const erorrMsgElement = document.getElementById('span#ErrorMsg');
-
-      const constraints = {
-          audio: false,
-          video:{
-              width: 200, height: 100
-          }
-      };
-      
-      // Access webcam
-      async function init(){
-          try{
-              const stream = await navigator.mediaDevices.getUserMedia(constraints);
-              handleSuccess(stream);
-          }
-          catch(e){
-              erorrMsgElement.innerHTML = `navigator.getUserMedia.error:{$(e.toString())}`;
-          }
-      }
-
-      // success
-      function handleSuccess(stream){
-          window.stream = stream;
-          video.srcObject = stream;
-      }
-
-      // load init
-      init();
-      // Draw image
-      var context = canvas.getContext('2d');
-      snap.addEventListener("click",function(){
-          context.drawImage(video, 0, 0, 200, 100);
-          console.log(photo.value);
-      });
-
-      const photo = document.getElementById('image');
-      context.drawImage(img, x, y, 100, 200);
-          
-      function save() {
-        photo.value = canvas.toDataURL();
-      }
-
-    </script>
-    

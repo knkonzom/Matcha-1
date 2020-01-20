@@ -75,7 +75,14 @@
            
             InterestId INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
             `interest_userId` INT NOT NULL,
-            InterestDescription VARCHAR(500) NOT NULL,
+            Int_1 VARCHAR(500)  NULL,
+            Int_2 VARCHAR(500)  NULL,
+            Int_3 VARCHAR(500)  NULL,
+            Int_4 VARCHAR(500)  NULL,
+            Int_5 VARCHAR(500)  NULL,
+            Int_6 VARCHAR(500)  NULL,
+            Int_7 VARCHAR(500)  NULL,
+            Int_8 VARCHAR(500)  NULL,
             username VARCHAR(255) NOT NULL,
             FOREIGN KEY (interest_userId) REFERENCES users(UsersId)
         )";

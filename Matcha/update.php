@@ -15,7 +15,14 @@ if(isset($_POST['update']))
     $lastNam = $_POST['lastName'];
     $firstName  = $_POST['firstName'];
     $sex_pref = $_POST['SexualPreference'];
-    $inter = $_POST['interest'];
+    $int_1 = $_POST['int_1'];
+    $int_2 = $_POST['int_2'];
+    $int_3 = $_POST['int_3'];
+    $int_4 = $_POST['int_4'];
+    $int_5 = $_POST['int_5'];
+    $int_6 = $_POST['int_6'];
+    $int_7 = $_POST['int_7'];
+    $int_8 = $_POST['int_8'];
     $Oldpwd = $_POST['old-pwd'];
     $Newpwd = $_POST['new-pwd'];
     $RepeatNewPwd = $_POST['repeat-new-pwd'];
@@ -223,13 +230,80 @@ if(isset($_POST['update']))
                                     echo $e->getMessage();
                                 }  
                             }    
-                            if($inter)
+                            if($int_1 || $int_2 || $int_3 || $int_4 || $int_5|| $int_6 || $int_7 || $int_8  )
                             {
-                                echo "jhfg";
-                               
+                                
+                                $sql = "SELECT * FROM interests WHERE interest_userId = '$verifyID' ";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+
+                                $res = $stmt->rowCount();
+                                if($res > 0)
+                                {
+                                    
+                                    if($int_1)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_1=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_1);
+                                        $stmt->execute();
+                                    }
+                                    if($int_2)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_2=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_2);
+                                        $stmt->execute();
+                                    }
+                                    if($int_3)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_3=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_3);
+                                        $stmt->execute();
+                                    }
+                                    if($int_4)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_4=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_4);
+                                        $stmt->execute();
+                                    }
+                                    if($int_5)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_5=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_5);
+                                        $stmt->execute();
+                                    }
+                                    if($int_6)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_6=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_6);
+                                        $stmt->execute();
+                                    }
+                                    if($int_7)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_7=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_7);
+                                        $stmt->execute();
+                                    }
+                                    if($int_8)
+                                    {
+                                        $sql = "UPDATE interests SET  Int_8=? WHERE interest_userId = '$verifyID'";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->bindParam(1, $int_8);
+                                        $stmt->execute();
+                                    }
+
+                                }
+                                else
+                                {
                                     try
                                     {
-                                        $sql = "INSERT INTO interests (interest_userId, InterestDescription, username) VALUES ('{$verifyID}', '{$inter}', '{$newuser}' ) ";
+                                        $sql = "INSERT INTO interests (interest_userId, Int_1, Int_2, Int_3, Int_4, Int_5, Int_6, Int_7, Int_8, username) VALUES ('{$verifyID}', '{$int_1}', '{$int_2}', '{$int_3}', '{$int_4}', '{$int_5}', '{$int_6}', '{$int_7}', '{$int_8}', '{$newuser}' ) ";
                                         $stm = $conn->prepare($sql);
                                         $stm->execute();
                                     }
@@ -237,7 +311,7 @@ if(isset($_POST['update']))
                                     {
                                         echo $e->getMessage();
                                     }
-                                    
+                                }
                             } 
                     }
 
