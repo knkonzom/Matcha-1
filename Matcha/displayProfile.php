@@ -1,111 +1,54 @@
 <?php
+include "config/database.php";
+date_default_timezone_set('Africa/Johannesburg');
 session_start();
-
-$user_id = $_SESSION['userUid'];
+if(isset($_POST['view']))
+{
+    
+   $_SESSION['pro_id'] =  $_POST['pro_id']."<br>";
+    $_POST['pro_username']."<br>";
+    $user_aboutme = $_POST['pro_aboutme']."<br>";
+    $user_age = $_POST['pro_age']."<br>";
+    $user_gender = $_POST['pro_gender']."<br>";
+    $user_sex = $_POST['pro_sex']."<br>";
+    $user_location = $_POST['pro_location']."<br>";
 
 function gender() 
 {
-    $user_id = $_SESSION['userUid'];
-    include "config/database.php";
-
-    try
-    {
-        $sql = "SELECT Gender FROM profileupdate WHERE username = '$user_id' ORDER BY Updateid DESC ";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-
-        if($res = $stmt->fetch(PDO::FETCH_ASSOC))
-        {
-            echo $res['Gender'];
-        }
-    }
-    catch(PDOException $e)
-    {
-        echo $e->getMessage();
-    }
+    echo $_POST['pro_gender'];
 }
     function sexpref() 
     {
-        $user_id = $_SESSION['userUid'];
-        include "config/database.php";
-        try
-        {
-            $sql = "SELECT sexualPreference FROM profileupdate WHERE username = '$user_id' ORDER BY Updateid DESC";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-    
-            if($res = $stmt->fetch(PDO::FETCH_ASSOC))
-            {
-                echo $res['sexualPreference'];
-            }
-        }
-        catch(PDOException $e)
-        {
-            echo $e->getMessage();
-        }
+        echo $_POST['pro_sex'];
     }
     function aboutme() 
     {
-        $user_id = $_SESSION['userUid'];
-        include "config/database.php";
-        try
-        {
-            $sql = "SELECT AboutMe FROM profileupdate WHERE username = '$user_id' ";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            if($res = $stmt->fetch(PDO::FETCH_ASSOC))
-            {
-                echo $res['AboutMe'];
-            }
-        }
-        catch(PDOException $e)
-        {
-            echo $e->getMessage();
-        }
+        echo $_POST['pro_aboutme'];
+       
     }
     function Age() 
-    {
-        $user_id = $_SESSION['userUid'];
-        include "config/database.php";
-    
-        try
-        {
-            $sql = "SELECT Age FROM profileupdate WHERE username = '$user_id' ";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-    
-            if($res = $stmt->fetch(PDO::FETCH_ASSOC))
-            {
-                echo $res['Age'];
-            }
-        }
-        catch(PDOException $e)
-        {
-            echo $e->getMessage();
-        }
+    { 
+        echo $_POST['pro_age'];
     }
     function interest() 
     {
-        $id_user = $_SESSION['userId'];;
+        $id_user = $_POST['pro_id'];
         include "config/database.php";
-        
-            try
+        try
+        {
+            $sql = "SELECT Interest FROM profileupdate WHERE update_userId='{$id_user}' ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $res = $stmt->fetchAll();
+            foreach($res as $r)
             {
-                $sql = "SELECT Interest FROM profileupdate WHERE update_userId='{$id_user}' ";
-                $stmt = $conn->prepare($sql);
-                $stmt->execute();
-                $res = $stmt->fetchAll();
-                
-                foreach($res as $r)
-                {
-                    echo $r['Interest'];
-                }
+                echo $r['Interest'];
             }
-            catch(PDOException $e)
-            {
-                echo $e->getMessage();
-            }
-        
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -122,22 +65,14 @@ function gender()
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
     <a class="active" href="UsersProfile.php">Home</a>
-<?php
-   include "config/database.php";
-
-   $sql = "SELECT * FROM notification WHERE receiver_id = '{$_SESSION['userId']}' ";
-   $stmt = $conn->prepare($sql);
-   $stmt->execute();
-   $notify =  $stmt->rowCount();
-?>
-<a class="active" href="index.php">Fame <?PHP echo $notify ?></a>
+    <a class="active" href="index.php">Fame</a>
   </div>
 
   <?php
             include "config/database.php";
                 try
                 {
-                    $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC ";
+                    $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_POST['pro_id']}' ORDER BY idCamImage DESC";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -145,18 +80,13 @@ function gender()
                     { 
                        echo '<img  width="120" height="120" src="upload/'.$row['imgfullNameCam'].' ">';
                     }
-
-                    $sql = "UPDATE profileupdate SET imgfullNameCam ='{$row['imgfullNameCam']}' WHERE update_userId= '{$_SESSION['userId']}' ";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute();
-
                 }
                 catch(PDOException $e)
                 {
                     echo $e->getMessage();
                 }
-
-                $sql = "SELECT * FROM status WHERE update_userId= '{$_SESSION['userId']}'";
+                
+                $sql = "SELECT * FROM status WHERE update_userId= '{$_POST['pro_id']}'";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute();
                 $res = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -167,20 +97,22 @@ function gender()
                 }
                 else if($res['online'] == 0)
                 {
-                    echo "last seen"." ".$res['offline'];
+                    echo "last seen".$res['offline'];
                 }
     ?>
   <div style="text-align: center; margin: 1%">
-  <h2><?php $user = $_SESSION['userUid']; echo "<p><h1> $user Profile</h1></p>";?></h2>
+  <h2><?php $user = $_POST['pro_username']; echo "<p><h1> $user Profile</h1></p>";?></h2>
   <form action="like.php" method="POST">
-    <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like profile</button>
+    <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like </button>
+    <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="unlikelike">unlike</button>
+    <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="block">block or report</button>
   </form>
  </div>
 </div>
 <body>
 <div class="scrollmenu">
         <?php 
-                            $sql = "SELECT * FROM webcamimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC LIMIT 4";
+                            $sql = "SELECT * FROM webcamimage WHERE update_userId= '{$_POST['pro_id']}' ORDER BY idCamImage DESC limit 4 ";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute();
                             $row = $stmt->fetchAll();
@@ -232,23 +164,26 @@ function gender()
     </table>
     <hr>
     <table>
-        <tr>
-            <td style="font-size:22px"><b>Current location: </b>   </td>
-            <td> <form action="" method="GET"> 
-                <input style="font-size:18px; width:70px; height:35px; margin:11" type="submit" name="allow" value="Allow">
-             </form></td>
-                
-            <?php
-            if(isset($_GET['allow']))
-            {
-                echo '<td style="font-size:22px"><span id="city"></span></td>';
-            }
-            ?>
+        <tr> 
+            <td style="font-size:22px"><b>Current location: </b>   </td> 
+            <td style="font-size:12px"><span id="city"></span></td>
         </tr>
     </table> 
 </body>
+<?PHP
+
+include "config/database.php";
+
+
+ $messege =  $_SESSION['userUid']." "."view your Profile";
+ $sql = "INSERT INTO notification (receiver_id, message, read_n) VALUES ('{$_POST['pro_id']}', '$messege', 1)";
+ $stmt = $conn->prepare($sql);
+ $stmt->execute();
+?>
+  
 <?php 
     include "footer.php";
+    }
 ?>
 
 <script>

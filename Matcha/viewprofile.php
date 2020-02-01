@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-$user_id = $_SESSION['userUid'];
+$user_id = $_SESSION['profileuser_uid'];
 
 function gender() 
 {
-    $user_id = $_SESSION['userUid'];
+    $user_id = $_SESSION['profileuser_uid'] ;
     include "config/database.php";
 
     try
@@ -26,7 +26,7 @@ function gender()
 }
     function sexpref() 
     {
-        $user_id = $_SESSION['userUid'];
+        $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
         try
         {
@@ -46,7 +46,7 @@ function gender()
     }
     function aboutme() 
     {
-        $user_id = $_SESSION['userUid'];
+        $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
         try
         {
@@ -65,7 +65,7 @@ function gender()
     }
     function Age() 
     {
-        $user_id = $_SESSION['userUid'];
+        $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
     
         try
@@ -86,26 +86,32 @@ function gender()
     }
     function interest() 
     {
-        $id_user = $_SESSION['userId'];;
+        $id_user = $_SESSION['profileuser_id'];
         include "config/database.php";
-        
-            try
+        try
+        {
+            $sql = "SELECT int_1, int_2, int_3, int_4, int_5, int_6, int_7, int_8  FROM interests WHERE interest_userId='{$id_user}' ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $res = $stmt->fetch();
+
+            // var_dump($res);
+            // $arr = array_unique($res);
+
+            $i = 0;
+            $len = count($res);
+            while($i < $len)
             {
-                $sql = "SELECT Interest FROM profileupdate WHERE update_userId='{$id_user}' ";
-                $stmt = $conn->prepare($sql);
-                $stmt->execute();
-                $res = $stmt->fetchAll();
                 
-                foreach($res as $r)
-                {
-                    echo $r['Interest'];
-                }
+                echo '<a style="" >'.$res[$i].'</a>';
+                echo "&nbsp&nbsp";
+                $i++;
             }
-            catch(PDOException $e)
-            {
-                echo $e->getMessage();
-            }
-        
+        }
+        catch(PDOException $e)
+        {
+            echo $e->getMessage();
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -122,22 +128,14 @@ function gender()
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
     <a class="active" href="UsersProfile.php">Home</a>
-<?php
-   include "config/database.php";
-
-   $sql = "SELECT * FROM notification WHERE receiver_id = '{$_SESSION['userId']}' ";
-   $stmt = $conn->prepare($sql);
-   $stmt->execute();
-   $notify =  $stmt->rowCount();
-?>
-<a class="active" href="index.php">Fame <?PHP echo $notify ?></a>
+    <a class="active" href="index.php">Fame</a>
   </div>
 
   <?php
             include "config/database.php";
                 try
                 {
-                    $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC ";
+                    $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_SESSION['profileuser_id']}' ORDER BY idCamImage DESC ";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -145,33 +143,23 @@ function gender()
                     { 
                        echo '<img  width="120" height="120" src="upload/'.$row['imgfullNameCam'].' ">';
                     }
-
-                    $sql = "UPDATE profileupdate SET imgfullNameCam ='{$row['imgfullNameCam']}' WHERE update_userId= '{$_SESSION['userId']}' ";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute();
-
                 }
                 catch(PDOException $e)
                 {
                     echo $e->getMessage();
                 }
-
-                $sql = "SELECT * FROM status WHERE update_userId= '{$_SESSION['userId']}'";
-                $stmt = $conn->prepare($sql);
-                $stmt->execute();
-                $res = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if($res['online'] == 1)
+                if($_SESSION)
                 {
+                    
                     echo '<p style=" color:green">online</p>';
                 }
-                else if($res['online'] == 0)
+                else
                 {
-                    echo "last seen"." ".$res['offline'];
+                    echo "last seen " . date("h:i:sa");
                 }
     ?>
   <div style="text-align: center; margin: 1%">
-  <h2><?php $user = $_SESSION['userUid']; echo "<p><h1> $user Profile</h1></p>";?></h2>
+  <h2><?php $user = $_SESSION['profileuser_uid']; echo "<p><h1> $user Profile</h1></p>";?></h2>
   <form action="like.php" method="POST">
     <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like profile</button>
   </form>
@@ -180,7 +168,7 @@ function gender()
 <body>
 <div class="scrollmenu">
         <?php 
-                            $sql = "SELECT * FROM webcamimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC LIMIT 4";
+                            $sql = "SELECT * FROM webcamimage WHERE update_userId= '{$_SESSION['profileuser_id']}' ORDER BY idCamImage DESC ";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute();
                             $row = $stmt->fetchAll();
@@ -233,17 +221,8 @@ function gender()
     <hr>
     <table>
         <tr>
-            <td style="font-size:22px"><b>Current location: </b>   </td>
-            <td> <form action="" method="GET"> 
-                <input style="font-size:18px; width:70px; height:35px; margin:11" type="submit" name="allow" value="Allow">
-             </form></td>
-                
-            <?php
-            if(isset($_GET['allow']))
-            {
-                echo '<td style="font-size:22px"><span id="city"></span></td>';
-            }
-            ?>
+            <td style="font-size:22px"><b>Current location: </b>   </td> 
+            <td style="font-size:12px"><span id="city"></span></td>
         </tr>
     </table> 
 </body>

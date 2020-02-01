@@ -3,7 +3,7 @@
 if(isset($_POST['submit']))
 {
     session_start();
-   $user = $_SESSION['newusername'];
+   $user = $_SESSION['userUid'];
    $tt = $_SESSION['userEmail'];
    $userId = $_SESSION['userId'];
 

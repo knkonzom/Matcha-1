@@ -1,13 +1,11 @@
 
 <?php  
-session_start();
- $usr_id = $_SESSION['userId'];
 
+session_start();
+$usr_id = $_SESSION['userId'];
 
 if(isset($_POST['update']))
 {
-    include "config/database.php";
-
     $Username = $_POST['username'];
     $Email = $_POST['email'];
     $aboutme = $_POST['aboutme'];
@@ -15,25 +13,17 @@ if(isset($_POST['update']))
     $lastNam = $_POST['lastName'];
     $firstName  = $_POST['firstName'];
     $sex_pref = $_POST['SexualPreference'];
-    $int_1 = $_POST['int_1'];
-    $int_2 = $_POST['int_2'];
-    $int_3 = $_POST['int_3'];
-    $int_4 = $_POST['int_4'];
-    $int_5 = $_POST['int_5'];
-    $int_6 = $_POST['int_6'];
-    $int_7 = $_POST['int_7'];
-    $int_8 = $_POST['int_8'];
     $Oldpwd = $_POST['old-pwd'];
     $Newpwd = $_POST['new-pwd'];
     $RepeatNewPwd = $_POST['repeat-new-pwd'];
-  $age = $_POST['age'];
+    $age = $_POST['age'];
 
     $str = file_get_contents('https://geolocation-db.com/json/');
     $json = json_decode($str, true);
     $newcity = $json["city"];
     // echo $newcity;
-    // exit();
-    
+    //  exit();
+
     if(empty($Oldpwd))
     {        
         header("location: UsersProfile.php?error=entercurrentpwd");
@@ -64,10 +54,13 @@ if(isset($_POST['update']))
         
         try 
         {
+            include "config/database.php";
             $sql = " SELECT * FROM users WHERE UsersId = '$usr_id' ";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
+            
             echo "$usr_id";
+            
             if($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
                
@@ -97,7 +90,7 @@ if(isset($_POST['update']))
 
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
                         $_SESSION['newusername'] =  $row['username'];
-                        echo $_SESSION['newusername'];
+                        
                         
 
                         $sql = "SELECT * FROM webcamimage WHERE update_userId='$usr_id' ";
@@ -139,7 +132,7 @@ if(isset($_POST['update']))
 
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
                         $_SESSION['newuseremail'] =  $row['userEmail'];
-                        echo $_SESSION['newuseremail'];
+                       
 
                         $sql = "SELECT * FROM webcamimage WHERE update_userId='$usr_id' ";
                         $stmt = $conn->prepare($sql);
@@ -214,105 +207,22 @@ if(isset($_POST['update']))
                                         $stmt->execute(); 
                         
                                 }
-                
-                                
                             } 
                             else
                             {
                                 try
                                 {            
-                                    $sql2 = "INSERT INTO profileupdate (update_userId, AboutMe, Gender, sexualPreference, username, `Location`, Age) VALUES ('{$verifyID}', '{$aboutme}', '{$gender}', '{$sex_pref}', '{$newuser}', '{$newcity}', '{$age}') ";
+                                    $sql2 = "INSERT INTO profileupdate (update_userId, AboutMe, Gender, sexualPreference, username, `Location`, Age, fame) VALUES ('{$verifyID}', '{$aboutme}', '{$gender}', '{$sex_pref}', '{$newuser}', '{$newcity}', '{$age}', 1)";
                                     $stm = $conn->prepare($sql2);
                                     $stm->execute();
+
                                 }
                                 catch(PDOException $e)
                                 {
                                     echo $e->getMessage();
                                 }  
                             }    
-                            if($int_1 || $int_2 || $int_3 || $int_4 || $int_5|| $int_6 || $int_7 || $int_8  )
-                            {
-                                
-                                $sql = "SELECT * FROM interests WHERE interest_userId = '$verifyID' ";
-                                $stmt = $conn->prepare($sql);
-                                $stmt->execute();
-
-                                $res = $stmt->rowCount();
-                                if($res > 0)
-                                {
-                                    
-                                    if($int_1)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_1=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_1);
-                                        $stmt->execute();
-                                    }
-                                    if($int_2)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_2=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_2);
-                                        $stmt->execute();
-                                    }
-                                    if($int_3)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_3=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_3);
-                                        $stmt->execute();
-                                    }
-                                    if($int_4)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_4=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_4);
-                                        $stmt->execute();
-                                    }
-                                    if($int_5)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_5=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_5);
-                                        $stmt->execute();
-                                    }
-                                    if($int_6)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_6=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_6);
-                                        $stmt->execute();
-                                    }
-                                    if($int_7)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_7=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_7);
-                                        $stmt->execute();
-                                    }
-                                    if($int_8)
-                                    {
-                                        $sql = "UPDATE interests SET  Int_8=? WHERE interest_userId = '$verifyID'";
-                                        $stmt = $conn->prepare($sql);
-                                        $stmt->bindParam(1, $int_8);
-                                        $stmt->execute();
-                                    }
-
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        $sql = "INSERT INTO interests (interest_userId, Int_1, Int_2, Int_3, Int_4, Int_5, Int_6, Int_7, Int_8, username) VALUES ('{$verifyID}', '{$int_1}', '{$int_2}', '{$int_3}', '{$int_4}', '{$int_5}', '{$int_6}', '{$int_7}', '{$int_8}', '{$newuser}' ) ";
-                                        $stm = $conn->prepare($sql);
-                                        $stm->execute();
-                                    }
-                                    catch(PDOException $e)
-                                    {
-                                        echo $e->getMessage();
-                                    }
-                                }
-                            } 
+                           
                     }
 
                      header("location: UsersProfile.php?updatesuccess=updated");

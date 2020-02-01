@@ -35,6 +35,9 @@
         `username` VARCHAR(255) NOT NULL,
         `Location` VARCHAR(255) NOT NULL,
         `Age` VARCHAR(255) NOT NULL,
+        `imgfullNameCam` LONGTEXT NULL,
+        `Interest` VARCHAR(255) NULL,
+        `fame` INT NOT NULL,
         FOREIGN KEY (update_userId) REFERENCES users(UsersId)
       )";
       $conn->exec($sql);
@@ -89,11 +92,13 @@
         $conn->exec($sql);
         
         
-        $sql = "CREATE TABLE IF NOT EXISTS `UserInterests` 
+        $sql = "CREATE TABLE IF NOT EXISTS `Status` 
         (
-            UserId INTEGER REFERENCES Users (UserId),
-            InterestId INTEGER REFERENCES Interests (InterestId),
-            PRIMARY KEY (UserId, InterestId)
+            `id` INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+            `update_userId` INT NOT NULL,
+            `online` INT NOT NULL,
+            `offline` datetime NOT NULL,
+            FOREIGN KEY (update_userId) REFERENCES users(UsersId)
         )";
         $conn->exec($sql);
 
@@ -120,6 +125,15 @@
           `likes_count` INT(11) NOT NULL,
           `orderCamImage` TEXT NOT NULL,
           FOREIGN KEY (update_userId) REFERENCES users(UsersId)
+      )";
+      $conn->exec($sql);
+
+      $sql = "CREATE TABLE IF NOT EXISTS `notification`
+      (
+          `notify_id` INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+          `receiver_id` INT(11) NOT NULL,
+          `message` TEXT NOT NULL,
+          `read_n`  INT(2) NOT NULL
       )";
       $conn->exec($sql);
 

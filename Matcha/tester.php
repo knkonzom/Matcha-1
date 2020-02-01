@@ -1,21 +1,20 @@
+<?php
 
-   
-   
+/*** our string ***/
+$string = "?><!@#$%^&*()}{~bobthebuilder";
 
+/*** echo the sanitized string ***/
+echo filter_var($string, FILTER_SANITIZE_SPECIAL_CHARS)."<br>";
+
+
+
+?>
 
 <?php
 
-$arr1 = array("46", "capetown", "money");
-$arr2 = array("46", "capetown", "mone");
-if(array_intersect($arr1, $arr2) == TRUE)
-{
-   echo "true";
-}
-else
-{
-    echo "false";
-}
+date_default_timezone_set('Africa/Johannesburg');
+$current_timestamp = date('H:i:s');
+echo $current_timestamp;
 ?>
 
-
-
+<?PHP

@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Africa/Johannesburg');
 if(isset($_POST['Submit-Login']))
 {
     include "../config/database.php";
@@ -22,7 +22,7 @@ if(isset($_POST['Submit-Login']))
                 $stmt = $conn->prepare($sql);
                 $stmt->bindParam(1, $mailuid);
                 $stmt->bindParam(2, $mailuid);
-                var_dump($stmt->execute());
+                $stmt->execute();
                 if($row = $stmt->fetch(PDO::FETCH_ASSOC))
                 {
                     
@@ -43,7 +43,27 @@ if(isset($_POST['Submit-Login']))
                             header("location: ../index.php?error=notverified");
                             exit();
                         }
-                    
+                        
+                        $date = date('Y-m-d H:i:s');
+
+                        $sql = "SELECT * FROM status WHERE update_userId='{$_SESSION['userId']}' ";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->execute();
+                        $res = $stmt->fetchColumn();
+
+                        if($res > 0)
+                        {
+                            $sql = "UPDATE `status` SET `online`= 1, `offline`='{$date}' WHERE update_userId='{$_SESSION['userId']}' ";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->execute();
+                        }
+                        else
+                        {
+                            $sql = "INSERT INTO `status` (update_userId, `online`, `offline`) VALUES ('{$_SESSION['userId']}', 1 , '$date') ";
+                            $stmt = $conn->prepare($sql);
+                            var_dump($stmt->execute());
+                        }
+
                         header("location: ../UsersProfile.php?login=loginsuccess");
                     }
                     else
