@@ -1,6 +1,12 @@
 <?php
 session_start();
+if(!$_SESSION['userId'])
+{
+    header("location: index.php?error=needtologin");
+}else if($_SESSION['userId']) {
 include "config/database.php";
+$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
 
 ?>
 <!DOCTYPE html>
@@ -26,6 +32,9 @@ include "config/database.php";
 <form action="search.php" method="POST">
   <input style="width:130px" type="text" name="search" placeholder="Search Profile" />
   <button style="height:40px;border-radius:4px; background-color:dodgerblue;" type="submit" name="SearchUser">search</button>
+  </form>
+  <form class="main_one" action="advanced_search.php" method="POST">
+    <button style="height:40px;border-radius:4px; background-color:dodgerblue;" type="submit" name="SearchAdvanced">Advanced Search</button>
   </form>
 
   <h1>Recommendation</h1>
@@ -351,5 +360,6 @@ include "config/database.php";
 <body>
 </body>
 <?php 
+}
     include "footer.php";
 ?>

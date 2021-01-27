@@ -3,6 +3,8 @@ date_default_timezone_set('Africa/Johannesburg');
 if(isset($_POST['Submit-Login']))
 {
     include "../config/database.php";
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
     
    
     $mailuid = htmlspecialchars($_POST['login_user']);

@@ -3,6 +3,7 @@
 if(isset($_POST['submit']))
 {
     session_start();
+    
 //    $user = $_SESSION['newusername'];
    $tt = $_SESSION['userEmail'];
    $userId = $_SESSION['userId'];
@@ -31,12 +32,14 @@ if(isset($_POST['submit']))
             if($fileSize < 2000000)
             {
                 
-              $imageFullName = $newFileName . mktime() . "." . $fileActualExt;
+              $imageFullName = $newFileName . mktime(0) . "." . $fileActualExt;
             $fileDestination = "upload/" . $imageFullName;
 
                 include "config/database.php";  
-                    try
-                    {
+                
+                try
+                {
+                        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
                         
                         $sql = " SELECT * FROM webcamimage";
                         $stmt = $conn->prepare($sql);
@@ -65,15 +68,12 @@ if(isset($_POST['submit']))
                         header("location: UsersProfile.php?upload=success");
                         
                      }
-                    catch(PDOException $e)
-                    {
+                    catch(PDOException $e){
                         echo $e->getMessage();
                     }
-                    $conn = null;
-                
+                    $conn = null;             
             }
-            else
-            {
+            else {
                 echo "File size is too big";
             }
         }
@@ -87,3 +87,5 @@ if(isset($_POST['submit']))
         exit();
     }
 }
+?>
+

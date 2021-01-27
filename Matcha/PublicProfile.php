@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!$_SESSION)
+{
+    header("location: index.php?error=needtologin");
+}else {
 
 $user_id = $_SESSION['userUid'];
 
@@ -7,6 +11,8 @@ function gender()
 {
     $user_id = $_SESSION['userUid'];
     include "config/database.php";
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
 
     try
     {
@@ -28,6 +34,8 @@ function gender()
     {
         $user_id = $_SESSION['userUid'];
         include "config/database.php";
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
         try
         {
             $sql = "SELECT sexualPreference FROM profileupdate WHERE username = '$user_id' ORDER BY Updateid DESC";
@@ -48,6 +56,8 @@ function gender()
     {
         $user_id = $_SESSION['userUid'];
         include "config/database.php";
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
         try
         {
             $sql = "SELECT AboutMe FROM profileupdate WHERE username = '$user_id' ";
@@ -67,6 +77,7 @@ function gender()
     {
         $user_id = $_SESSION['userUid'];
         include "config/database.php";
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
     
         try
         {
@@ -88,6 +99,7 @@ function gender()
     {
         $id_user = $_SESSION['userId'];;
         include "config/database.php";
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
         
             try
             {
@@ -107,6 +119,7 @@ function gender()
             }
         
     }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -118,12 +131,14 @@ function gender()
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
-<div class="header">
+<div class="header" style="margin-top:0px">
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
+    <a class="current" href="PublicProfile.php">Profile</a>
     <a class="active" href="UsersProfile.php">Home</a>
 <?php
    include "config/database.php";
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
    $sql = "SELECT * FROM notification WHERE receiver_id = '{$_SESSION['userId']}' ";
    $stmt = $conn->prepare($sql);
@@ -135,6 +150,8 @@ function gender()
 
   <?php
             include "config/database.php";
+            $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
                 try
                 {
                     $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC ";
@@ -143,12 +160,14 @@ function gender()
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     if($row)
                     { 
-                       echo '<img  width="120" height="120" src="upload/'.$row['imgfullNameCam'].' ">';
+                       echo '<img  width="100" height="70" src="upload/'.$row['imgfullNameCam'].' ">';
+                    }else {
+                        echo '<img alt="Qries" src="https://www.edmundsgovtech.com/wp-content/uploads/2020/01/default-picture_0_0.png" width=100" height="70">';
                     }
 
-                    $sql = "UPDATE profileupdate SET imgfullNameCam ='{$row['imgfullNameCam']}' WHERE update_userId= '{$_SESSION['userId']}' ";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute();
+                   $sql = "UPDATE profileupdate SET imgfullNameCam ='{$row['imgfullNameCam']}' WHERE update_userId= '{$_SESSION['userId']}' ";
+                   $stmt = $conn->prepare($sql);
+                   $stmt->execute();
 
                 }
                 catch(PDOException $e)
@@ -167,18 +186,19 @@ function gender()
                 }
                 else if($res['online'] == 0)
                 {
-                    echo "last seen"." ".$res['offline'];
+                    echo "last seen: "." ".$res['offline'];
                 }
     ?>
-  <div style="text-align: center; margin: 1%">
-  <h2><?php $user = $_SESSION['userUid']; echo "<p><h1> $user Profile</h1></p>";?></h2>
-  <form action="like.php" method="POST">
-    <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like profile</button>
-  </form>
- </div>
+    
+    <div style="text-align: center; margin-top: 0%">
+        <?php $user = $_SESSION['userUid']; echo "<p><h2> $user Profile</h2></p>";?>
+        <form action="like.php" method="POST">
+            <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like profile</button>
+        </form>
+    </div>
 </div>
 <body>
-<div class="scrollmenu">
+<div class="scrollmenu" style="height:100px;margin-top:0px">
         <?php 
                             $sql = "SELECT * FROM webcamimage WHERE update_userId= '{$_SESSION['userId']}' ORDER BY idCamImage DESC LIMIT 4";
                             $stmt = $conn->prepare($sql);
@@ -233,9 +253,9 @@ function gender()
     <hr>
     <table>
         <tr>
-            <td style="font-size:22px"><b>Current location: </b>   </td>
+            <td style="font-size:22px"><b>Current location: </b>  </td>
             <td> <form action="" method="GET"> 
-                <input style="font-size:18px; width:70px; height:35px; margin:11" type="submit" name="allow" value="Allow">
+                <button style="background-color:dodgerblue; border-radius:5px; height:30px; width:50px " type="submit" name="allow" value="Allow">Show</button>
              </form></td>
                 
             <?php
@@ -247,9 +267,12 @@ function gender()
         </tr>
     </table> 
 </body>
+        
 <?php 
+}
     include "footer.php";
 ?>
+
 
 <script>
       $.getJSON('https://geolocation-db.com/json/')

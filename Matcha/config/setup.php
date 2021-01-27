@@ -1,6 +1,16 @@
 <?php
     include "database.php";
 
+    try {
+        $conn->exec("CREATE DATABASE IF NOT EXISTS `matcha2`");
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+
+    
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
   try
   {
       $sql = "CREATE TABLE IF NOT EXISTS `images`

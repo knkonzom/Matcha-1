@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<?php
+include "./config/setup.php";
+session_start();
+
+?>
 <html>
 <head>
     <title>Matcha</title>  
@@ -26,7 +31,7 @@
 <input type="password" name="login_pwd" placeholder="password"><br>
 <input   style="background-color:dodgerblue; color:white; border-radius: 20px;" type ="submit" name="Submit-Login" value="LOGIN">
 </form>
-<a class="active" href="resetpassword.php">Resetpassword</a>
+<a class="active" href="resetpassword.php"><button style="background-color:red; color:white; border-radius: 20px;">Reset Password</button></a>
 </div>
 </body>
 <?php

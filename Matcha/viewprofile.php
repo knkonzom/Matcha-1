@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!$_SESSION)
+{
+    header("location: index.php?error=needtologin");
+}else {
 
 $user_id = $_SESSION['profileuser_uid'];
 
@@ -7,6 +11,8 @@ function gender()
 {
     $user_id = $_SESSION['profileuser_uid'] ;
     include "config/database.php";
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
 
     try
     {
@@ -28,6 +34,8 @@ function gender()
     {
         $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
         try
         {
             $sql = "SELECT sexualPreference FROM profileupdate WHERE username = '$user_id' ORDER BY Updateid DESC";
@@ -48,6 +56,8 @@ function gender()
     {
         $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
+         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
         try
         {
             $sql = "SELECT AboutMe FROM profileupdate WHERE username = '$user_id' ";
@@ -67,6 +77,8 @@ function gender()
     {
         $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
     
         try
         {
@@ -88,6 +100,8 @@ function gender()
     {
         $id_user = $_SESSION['profileuser_id'];
         include "config/database.php";
+          $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
         try
         {
             $sql = "SELECT int_1, int_2, int_3, int_4, int_5, int_6, int_7, int_8  FROM interests WHERE interest_userId='{$id_user}' ";
@@ -133,6 +147,8 @@ function gender()
 
   <?php
             include "config/database.php";
+            $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
                 try
                 {
                     $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_SESSION['profileuser_id']}' ORDER BY idCamImage DESC ";
@@ -226,7 +242,8 @@ function gender()
         </tr>
     </table> 
 </body>
-<?php 
+<?php
+}
     include "footer.php";
 ?>
 

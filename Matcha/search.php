@@ -2,6 +2,8 @@
 session_start();
 
 include "config/database.php";
+$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
 
 if(isset($_POST['SearchUser']))
 {

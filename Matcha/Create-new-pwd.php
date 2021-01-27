@@ -1,5 +1,10 @@
 <?php
-session_start()
+session_start();
+if(!$_SESSION)
+{
+    header("location: index.php?error=needtologin");
+}else if($_SESSION['userId']) {
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,6 +53,7 @@ session_start()
 </body>
     
 <?php
+}
     include "footer.php";
   ?>
 </html>

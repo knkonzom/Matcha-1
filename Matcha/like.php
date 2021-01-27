@@ -1,7 +1,13 @@
 <?php
 
 include "config/database.php";
+$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
 session_start();
+if(!$_SESSION)
+{
+    header("location: index.php?error=needtologin");
+}else {
 
 echo $id = $_SESSION['pro_id'];
 
@@ -37,5 +43,6 @@ if(isset($_POST['likeit']))
       {
         echo $e->getMessage();
       }
+}
 }
 ?> 

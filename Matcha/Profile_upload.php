@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!$_SESSION)
+{
+    header("location: index.php?error=needtologin");
+}else {
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,7 +17,8 @@ session_start();
 <div class="header">
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
-    <a class="active" href="index.php">Home</a>
+    <a class="current" href="Profile_upload.php">Edit profile</a>
+    <a class="active" href="PublicProfile.php">Home</a>
     <a class="active" href="includes/logout.inc.php">Log Out</a>
   </div>
 <form action="includes/image_upload.inc.php" method="POST" enctype="multipart/form-data">
@@ -24,4 +29,7 @@ session_start();
         </h1>
   </form>
   </html>
+<?php
+}
+?>
 

@@ -35,6 +35,17 @@ body {
 
 }
 
+.article-container{
+  width: 900px;
+  background-color: #fff;
+  padding: 30px;
+}
+
+.article-box{
+  padding-bottom: 30px;
+  width: 100px;
+}
+
 .header {
   overflow: hidden;
   background-color: #f1f1f1;
@@ -67,6 +78,11 @@ body {
   color: white;
 }
 
+.header a.current {
+  background-color: red;
+  color: white;
+}
+
 .header-right {
   float: right;
 }
@@ -83,7 +99,10 @@ body {
   }
 }
 
-
+.main_one{
+  background-color: green;
+  color: white;
+}
   form > div {
     clear: both;
     overflow: hidden;

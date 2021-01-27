@@ -24,7 +24,7 @@
       <input type="text" name="LastName" value="<?php if(isset($_GET['LastName'])) echo $_GET['LastName'];?>" placeholder="last name"><br>
       <input type="password" name="Password" placeholder="password"><br>
       <input type="password" name="Repeat-password" placeholder="Repeat-password"><br>
-      <button type="submit" name="Submit-SignUp">Sign Up</button>
+      <button style="background-color:dodgerblue; color:white; border-radius: 20px;" type="submit" name="Submit-SignUp">Sign Up</button>
 </form>
 </div>
 </body>

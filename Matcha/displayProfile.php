@@ -1,7 +1,13 @@
 <?php
 include "config/database.php";
+$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
 date_default_timezone_set('Africa/Johannesburg');
 session_start();
+if(!$_SESSION)
+{
+    header("location: index.php?error=needtologin");
+}else if($_SESSION['userId']){
 if(isset($_POST['view']))
 {
     
@@ -34,6 +40,8 @@ function gender()
     {
         $id_user = $_POST['pro_id'];
         include "config/database.php";
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
         try
         {
             $sql = "SELECT Interest FROM profileupdate WHERE update_userId='{$id_user}' ";
@@ -70,6 +78,8 @@ function gender()
 
   <?php
             include "config/database.php";
+            $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
                 try
                 {
                     $sql = "SELECT imgfullNameCam FROM profileimage WHERE update_userId= '{$_POST['pro_id']}' ORDER BY idCamImage DESC";
@@ -173,6 +183,8 @@ function gender()
 <?PHP
 
 include "config/database.php";
+$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+
 
 
  $messege =  $_SESSION['userUid']." "."view your Profile";
@@ -181,7 +193,8 @@ include "config/database.php";
  $stmt->execute();
 ?>
   
-<?php 
+<?php
+}
     include "footer.php";
     }
 ?>
