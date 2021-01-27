@@ -57,8 +57,10 @@ $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
         
                 try
                 { 
- 
-                      $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Straight' AND Gender='Female' AND Location='{$_SESSION['location']}' AND fame > 0 ";
+
+                  
+                      $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Straight' AND Gender='Female' AND Location='{$_SESSION['location']}' AND fame >= 0 ";
+  
                       $stmt = $conn->prepare($sql);
                       $stmt->execute();
                       $row1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -67,12 +69,12 @@ $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
                      
                       foreach($row1 as $person)
                       {
-                        
+
                         if ($person['update_userId'] != $user_id)
                         {  
                           $array1 = array($_SESSION['inter']);
                           $array2 = array($person['Interest']);
-
+                      
                           $array1 = explode(" ", $array1[0]);
                           $array2 = explode(" ", $array2[0]);
                         
@@ -81,6 +83,7 @@ $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
                                                   $_SESSION['listall_userid'] = $person['update_userId'];
                                                   $_SESSION['listall_userUid'] = $person['username'];
+
                                               ?>
                                               <div>
                                                 <div class="recog"><?php 
@@ -122,7 +125,7 @@ $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
                 try
                 { 
 
-                      $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Straight' AND Gender='Male' AND Location='{$_SESSION['location']}' AND fame > 0 ";
+                      $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Straight' AND Gender='Male' AND Location='{$_SESSION['location']}' AND fame >= 0 ";
                       $stmt = $conn->prepare($sql);
                       $stmt->execute();
                       $row1 = $stmt->fetchAll(PDO::FETCH_ASSOC);             
@@ -182,7 +185,7 @@ $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
               try
               { 
 
-                    $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Homosexual' AND Gender='Female' AND Location='{$_SESSION['location']}' AND fame > 0";
+                    $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Homosexual' AND Gender='Female' AND Location='{$_SESSION['location']}' AND fame >= 0";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $row1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -241,7 +244,7 @@ $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
               try
               { 
 
-                    $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Homosexual' AND Gender='Male' AND Location='{$_SESSION['location']}' AND fame > 0 ";
+                    $sql = "SELECT * FROM profileupdate WHERE sexualPreference='Homosexual' AND Gender='Male' AND Location='{$_SESSION['location']}' AND fame >= 0 ";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute();
                     $row1 = $stmt->fetchAll(PDO::FETCH_ASSOC);        
@@ -301,7 +304,7 @@ $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
                     try
                     { 
 
-                          $sql = "SELECT * FROM profileupdate WHERE Location='{$_SESSION['location']}' AND fame > 0 ";
+                          $sql = "SELECT * FROM profileupdate WHERE Location='{$_SESSION['location']}' AND fame >=0 ";
                           $stmt = $conn->prepare($sql);
                           $stmt->execute();
                           $row1 = $stmt->fetchAll(PDO::FETCH_ASSOC);                       

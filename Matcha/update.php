@@ -17,19 +17,17 @@ if(isset($_POST['update']))
     $Newpwd = $_POST['new-pwd'];
     $RepeatNewPwd = $_POST['repeat-new-pwd'];
     $age = $_POST['age'];
+    $interest = $_POST['interest'];
 
     $str = file_get_contents('https://geolocation-db.com/json/');
     $json = json_decode($str, true);
     $newcity = $json["city"];
+
     // echo $newcity;
     //  exit();
 
-    if(empty($Oldpwd))
-    {        
-        header("location: UsersProfile.php?error=entercurrentpwd");
-        exit();
-    }
-    // else if(!filter_var($Email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-9 ]*$\/", $Username) )
+    
+    // if(!filter_var($Email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-9 ]*$\/", $Username) )
     // {
     //     header("location: UsersProfile.php?error=invaliduidmail");
     //     exit();
@@ -44,7 +42,7 @@ if(isset($_POST['update']))
     //     header("location: UsersProfile.php?error=invalidmail&uid=".$Email);
     //     exit();
     // }
-    else if ($Newpwd !== $RepeatNewPwd)
+    if ($Newpwd !== $RepeatNewPwd)
     {
         header("location: UsersProfile.php?error=passwordcheck&uid=".$Username."&mail=".$Email);
         exit();
@@ -68,15 +66,15 @@ if(isset($_POST['update']))
             if($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
                
-                 $oldpwdCheck = password_verify($Oldpwd, $row["usersPassword"]);
-                if($oldpwdCheck === false)
-                {
+                //  $oldpwdCheck = password_verify($Oldpwd, $row["usersPassword"]);
+                // if($oldpwdCheck === false)
+                // {
                     
-                    header("location: UsersProfile.php?error=old-pwd-not-match-current-pwd");
-                    exit();
-                }
-                else if($oldpwdCheck === true)
-                {
+                //     header("location: UsersProfile.php?error=old-pwd-not-match-current-pwd");
+                //     exit();
+                // }
+                // else if($oldpwdCheck === true)
+                ///{
                     
                     $verifyID = $row['UsersId'];
                     $newuser = $row['username'];
@@ -211,6 +209,20 @@ if(isset($_POST['update']))
                                         $stmt->execute(); 
                         
                                 }
+                                if($interest)
+                                {
+                                        $sql = "UPDATE profileupdate SET Interest='$interest' WHERE update_userId='$usr_id'  ";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute(); 
+                        
+                                }
+                                if($newcity)
+                                {
+                                        $sql = "UPDATE profileupdate SET Location='$newcity' WHERE update_userId='$usr_id'  ";
+                                        $stmt = $conn->prepare($sql);
+                                        $stmt->execute(); 
+                        
+                                }
                             } 
                             else
                             {
@@ -231,12 +243,12 @@ if(isset($_POST['update']))
 
                      header("location: UsersProfile.php?updatesuccess=updated");
                     exit();               
-                }
-                else
-                {
-                    echo "Your old password must be match with your current password or try reset your password from login page.";
-                    exit();
-                }
+                // }
+                // else
+                // {
+                //     echo "Your old password must be match with your current password or try reset your password from login page.";
+                //     exit();
+                // }
             }
         }
         catch (PDOException $e)
@@ -252,5 +264,6 @@ else
     header("location: ../index.php");
     exit();
 }
+
 ?>
 

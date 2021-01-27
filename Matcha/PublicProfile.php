@@ -1,28 +1,42 @@
 <?php
+
 session_start();
-if(!$_SESSION)
-{
-    header("location: index.php?error=needtologin");
-}else {
+
 
 $user_id = $_SESSION['userUid'];
+
+function getCurrentUser() {
+    $unique_id = $_SESSION['userId'];
+
+    include "config/database.php";
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    
+        $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo strtoupper( $res['username']);
+}
 
 function gender() 
 {
     $user_id = $_SESSION['userUid'];
+    $unique_id = $_SESSION['userId'];
+
     include "config/database.php";
     $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
 
     try
     {
-        $sql = "SELECT Gender FROM profileupdate WHERE username = '$user_id' ORDER BY Updateid DESC ";
+        $sql = "SELECT Gender FROM profileupdate WHERE update_userId = '$unique_id' ORDER BY Updateid DESC ";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
         if($res = $stmt->fetch(PDO::FETCH_ASSOC))
         {
-            echo $res['Gender'];
+            echo strtoupper( $res['Gender']);
         }
     }
     catch(PDOException $e)
@@ -33,12 +47,14 @@ function gender()
     function sexpref() 
     {
         $user_id = $_SESSION['userUid'];
+        $unique_id = $_SESSION['userId'];
+
         include "config/database.php";
         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
         try
         {
-            $sql = "SELECT sexualPreference FROM profileupdate WHERE username = '$user_id' ORDER BY Updateid DESC";
+            $sql = "SELECT sexualPreference FROM profileupdate WHERE update_userId = '$unique_id' ORDER BY Updateid DESC";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
     
@@ -55,12 +71,13 @@ function gender()
     function aboutme() 
     {
         $user_id = $_SESSION['userUid'];
+        $unique_id = $_SESSION['userId'];
         include "config/database.php";
         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
         try
         {
-            $sql = "SELECT AboutMe FROM profileupdate WHERE username = '$user_id' ";
+            $sql = "SELECT AboutMe FROM profileupdate WHERE update_userId = '$unique_id' ";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             if($res = $stmt->fetch(PDO::FETCH_ASSOC))
@@ -76,12 +93,14 @@ function gender()
     function Age() 
     {
         $user_id = $_SESSION['userUid'];
+        $unique_id = $_SESSION['userId'];
+
         include "config/database.php";
         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
     
         try
         {
-            $sql = "SELECT Age FROM profileupdate WHERE username = '$user_id' ";
+            $sql = "SELECT Age FROM profileupdate WHERE update_userId = '$unique_id' ";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
     
@@ -97,7 +116,7 @@ function gender()
     }
     function interest() 
     {
-        $id_user = $_SESSION['userId'];;
+        $id_user = $_SESSION['userId'];
         include "config/database.php";
         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
         
@@ -110,7 +129,7 @@ function gender()
                 
                 foreach($res as $r)
                 {
-                    echo $r['Interest'];
+                    echo strtoupper($r['Interest']);
                 }
             }
             catch(PDOException $e)
@@ -135,7 +154,7 @@ function gender()
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
     <a class="current" href="PublicProfile.php">Profile</a>
-    <a class="active" href="UsersProfile.php">Home</a>
+    <a class="active" href="UsersProfile.php">Edit Profile</a>
 <?php
    include "config/database.php";
     $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
@@ -145,7 +164,7 @@ function gender()
    $stmt->execute();
    $notify =  $stmt->rowCount();
 ?>
-<a class="active" href="index.php">Fame <?PHP echo $notify ?></a>
+<a class="active" href="PublicProfile.php">Fame: <?PHP echo $notify ?></a>
   </div>
 
   <?php
@@ -186,15 +205,17 @@ function gender()
                 }
                 else if($res['online'] == 0)
                 {
-                    echo "last seen: "." ".$res['offline'];
+                    echo "last seen: <b>".$res['offline']; echo "</b>";
                 }
     ?>
     
     <div style="text-align: center; margin-top: 0%">
-        <?php $user = $_SESSION['userUid']; echo "<p><h2> $user Profile</h2></p>";?>
-        <form action="like.php" method="POST">
+        <?php 
+        $user = $_SESSION['userUid']; 
+        echo "<p><h1 style='color:green'>Your Profile"; ?></h1></p>
+        <!-- <form action="like.php" method="POST">
             <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like profile</button>
-        </form>
+        </form> -->
     </div>
 </div>
 <body>
@@ -254,14 +275,19 @@ function gender()
     <table>
         <tr>
             <td style="font-size:22px"><b>Current location: </b>  </td>
+            
             <td> <form action="" method="GET"> 
-                <button style="background-color:dodgerblue; border-radius:5px; height:30px; width:50px " type="submit" name="allow" value="Allow">Show</button>
+                <button style="background-color:dodgerblue; border-radius:5px; height:30px; width:50px " type="submit" name="allow" value="Allow">Allow</button>
              </form></td>
                 
             <?php
             if(isset($_GET['allow']))
             {
-                echo '<td style="font-size:22px"><span id="city"></span></td>';
+                if($_SESSION['userUid']) {
+                    echo '<td style="font-size:22px"><span id="city"></span></td>';
+                }
+               // echo '<td style="font-size:22px"><span id="city"></span></td>';
+            
             }
             ?>
         </tr>
@@ -269,7 +295,7 @@ function gender()
 </body>
         
 <?php 
-}
+
     include "footer.php";
 ?>
 

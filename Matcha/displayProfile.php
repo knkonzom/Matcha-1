@@ -2,6 +2,8 @@
 include "config/database.php";
 $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
+
+
 date_default_timezone_set('Africa/Johannesburg');
 session_start();
 if(!$_SESSION)
@@ -88,7 +90,7 @@ function gender()
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     if($row)
                     { 
-                       echo '<img  width="120" height="120" src="upload/'.$row['imgfullNameCam'].' ">';
+                       echo '<img  width="120" height="70" src="upload/'.$row['imgfullNameCam'].' ">';
                     }
                 }
                 catch(PDOException $e)
@@ -107,14 +109,14 @@ function gender()
                 }
                 else if($res['online'] == 0)
                 {
-                    echo "last seen".$res['offline'];
+                    echo "last seen: <b>".$res['offline']; echo "</b>";
                 }
     ?>
-  <div style="text-align: center; margin: 1%">
+  <div style="text-align: center; margin: 1%; margin-top:0%">
   <h2><?php $user = $_POST['pro_username']; echo "<p><h1> $user Profile</h1></p>";?></h2>
   <form action="like.php" method="POST">
     <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like </button>
-    <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="unlikelike">unlike</button>
+    <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="unlike">unlike</button>
     <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="block">block or report</button>
   </form>
  </div>

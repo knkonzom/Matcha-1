@@ -31,7 +31,7 @@
             {
                 if($_GET["reset"] == "success")
                 {
-                    echo '<strong><p style="color:#73AD21; text-align:center"><strong>A link has been sent to the require email!</p></strong>';
+                    echo '<strong><p style="color:#73AD21; text-align:center"><strong>A link has been sent to the required email!</p></strong>';
                 }
             }
             else if(isset($_GET["error"]))

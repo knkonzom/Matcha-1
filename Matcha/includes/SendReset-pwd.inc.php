@@ -49,11 +49,14 @@ if(isset($_POST['reset-submit']))
                   $stmt->bindParam(4, $expire);
                   $stmt->execute();
 
-                  if(mail($to, $subject, $message, $headers))
-                  {
+                  try {
+                    if(mail($to, $subject, $message, $headers)) {
                       header("location: ../resetpassword.php?reset=success");
-                      exit();
-                  }     
+                    } 
+                  } catch (PDOException $e) {
+                    echo $e->getMessage();
+                  }
+                   
         }
         catch (PDOException $e)
         {

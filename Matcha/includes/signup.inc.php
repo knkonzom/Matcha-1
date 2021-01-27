@@ -17,42 +17,42 @@ if(isset($_POST['Submit-SignUp']))
     if(empty($username) || empty($email) || empty($first_name) || empty($last_name) || empty($password) || empty($passwordRepeat))
     {
         
-        header("location: ../index.php?error=emptyfields&username=".$username."&email=".$email);
+        header("location: ../signup.php?error=emptyfields&username=".$username."&email=".$email);
     
     }
     else if(!filter_var($email, FILTER_VALIDATE_EMAIL) && !preg_match("/^[a-zA-Z0-9]*$/", $username) )
     {
-        header("location: ../index.php?error=invaliduidmail");
+        header("location: ../signup.php?error=invaliduidmail");
         
     }
     else if(!filter_var($email, FILTER_VALIDATE_EMAIL))
     {
-        header("location: ../index.php?error=invalidmail&username=".$username);
+        header("location: ../signup.php?error=invalidmail&username=".$username);
         
     }
     else if(!preg_match("/^[a-zA-Z0-9]*$/", $username))
     {
-        header("location: ../index.php?error=invalidmail&username=".$email);
+        header("location: ../signup.php?error=invalidmail&username=".$email);
         
     }
     else if ($password !== $passwordRepeat)
     {
-        header("location: ../index.php?error=passwordcheck&username=".$username."&email=".$email);
+        header("location: ../signup.php?error=passwordcheck&username=".$username."&email=".$email);
     
     }
     // else if(strlen($password) < 8 )
     // {
-    //     header("location: ../index.php?error=passwordlen&username=".$username."&email=".$email);
+    //     header("location: ../signup.php?error=passwordlen&username=".$username."&email=".$email);
     //     exit();
     // }
     // else if(!preg_match("/[A-Z]/", $password))
     // {
-    //     header("location: ../index.php?error=passwordCAP&username=".$username."&email=".$email);
+    //     header("location: ../signup.php?error=passwordCAP&username=".$username."&email=".$email);
     //     exit();
     // }
     // else if(!preg_match("/[0-9]/", $password))
     // {
-    //     header("location: ../index.php?error=passwordNUM&username=".$username."&email=".$email);
+    //     header("location: ../signup.php?error=passwordNUM&username=".$username."&email=".$email);
     //     exit();
     // }
     else 
@@ -82,12 +82,12 @@ if(isset($_POST['Submit-SignUp']))
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 if($result['username'] == "$username")
                 {   
-                    header("location: ../index.php?error=usertaken&email=".$username);
+                    header("location: ../signup.php?error=usertaken&email=".$username);
                     
                 }
                 else if($result['usersEmail'] == "$email")
                 {   
-                    header("location: ../index.php?error=emailtaken&email=".$email);
+                    header("location: ../signup.php?error=emailtaken&email=".$email);
                 
                 }
                 else
@@ -162,5 +162,5 @@ if(isset($_POST['Submit-SignUp']))
 }
 else
 {
-    header("location: ../index.php");
+    header("location: ../signup.php");
 }
