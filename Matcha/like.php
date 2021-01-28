@@ -34,7 +34,7 @@ if(isset($_POST['likeit']))
         
         $id = intval($id);
 
-        $sql = "SELECT * FROM notification WHERE receiver_id=$id AND message='$messege' ";
+        $sql = "SELECT * FROM notification WHERE receiver_id=$id AND `message`='$messege' ";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
@@ -46,7 +46,7 @@ if(isset($_POST['likeit']))
           exit();
         }
         else{
-          $sql = "INSERT INTO notification (`receiver_id`, message, read_n) VALUES ($id, '$messege', 1)";
+          $sql = "INSERT INTO notification (`receiver_id`, `message`, read_n) VALUES ($id, '$messege', 1)";
           $stmt = $conn->prepare($sql);
           $stmt->execute();
 
@@ -64,7 +64,7 @@ if(isset($_POST['likeit']))
     
     $id = intval($id);
 
-    $sql = "SELECT * FROM notification WHERE receiver_id=$id AND message='$messege' ";
+    $sql = "SELECT * FROM notification WHERE receiver_id=$id AND `message`='$messege' ";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
 
@@ -76,7 +76,7 @@ if(isset($_POST['likeit']))
       exit();
     }
     else{
-      $sql = "INSERT INTO notification (`receiver_id`, message, read_n) VALUES ($id, '$messege', 1)";
+      $sql = "INSERT INTO notification (`receiver_id`, `message`, read_n) VALUES ($id, '$messege', 1)";
       $stmt = $conn->prepare($sql);
       $stmt->execute();
 

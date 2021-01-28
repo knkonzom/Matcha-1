@@ -21,10 +21,24 @@ if(isset($_POST['view']))
     $user_sex = $_POST['pro_sex']."<br>";
     $user_location = $_POST['pro_location']."<br>";
 
-function gender() 
-{
-    echo $_POST['pro_gender'];
-}
+    // function getCurrentUser() {
+    //     $unique_id = $_SESSION['userId'];
+    
+    //     include "config/database.php";
+    //     $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        
+    //         $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
+    //         $stmt = $conn->prepare($sql);
+    //         $stmt->execute();
+    
+    //         $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    //         echo strtoupper( $res['username']);
+    // }
+
+    function gender() 
+    {
+        echo $_POST['pro_gender'];
+    }
     function sexpref() 
     {
         echo $_POST['pro_sex'];
@@ -75,7 +89,7 @@ function gender()
   <h1 class="logo">Matcha</h1>
   <div class="header-right">
     <a class="active" href="UsersProfile.php">Home</a>
-    <a class="active" href="index.php">Fame</a>
+    <a class="active" href="displayProfile.php">Fame</a>
   </div>
 
   <?php
@@ -90,7 +104,7 @@ function gender()
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     if($row)
                     { 
-                       echo '<img  width="120" height="70" src="upload/'.$row['imgfullNameCam'].' ">';
+                       echo '<img  width="120" height="70px" src="upload/'.$row['imgfullNameCam'].' ">';
                     }
                 }
                 catch(PDOException $e)
@@ -113,7 +127,7 @@ function gender()
                 }
     ?>
   <div style="text-align: center; margin: 1%; margin-top:0%">
-  <h2><?php $user = $_POST['pro_username']; echo "<p><h1> $user Profile</h1></p>";?></h2>
+  <h2><?php $user = $_POST['pro_username']; echo "<p><h1 style='color:green;'> $user Profile</h1></p>";?></h2>
   <form action="like.php" method="POST">
     <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="likeit">like </button>
     <button style="background-color:dodgerblue; border-radius:5px; height:30px" type="submit" name="unlike">unlike</button>
@@ -187,10 +201,19 @@ function gender()
 include "config/database.php";
 $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
+$unique_id = $_SESSION['userId'];
+    
+include "config/database.php";
+$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
 
+    $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
 
- $messege =  $_SESSION['userUid']." "."view your Profile";
- $sql = "INSERT INTO notification (receiver_id, message, read_n) VALUES ('{$_POST['pro_id']}', '$messege', 1)";
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+ $messege =  $res['username']." "."view your Profile";
+ $sql = "INSERT INTO notification (receiver_id, `message`, read_n) VALUES ({$_POST['pro_id']}, '$messege', 1)";
  $stmt = $conn->prepare($sql);
  $stmt->execute();
 ?>
