@@ -11,7 +11,7 @@ function gender()
 {
     $user_id = $_SESSION['profileuser_uid'] ;
     include "config/database.php";
-    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
 
     try
@@ -34,7 +34,7 @@ function gender()
     {
         $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
         try
         {
@@ -56,7 +56,7 @@ function gender()
     {
         $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
-         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+         $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
         try
         {
@@ -77,7 +77,7 @@ function gender()
     {
         $user_id = $_SESSION['profileuser_uid'];
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
     
         try
@@ -100,7 +100,7 @@ function gender()
     {
         $id_user = $_SESSION['profileuser_id'];
         include "config/database.php";
-          $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+          $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
         try
         {
@@ -147,7 +147,7 @@ function gender()
 
   <?php
             include "config/database.php";
-            $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+            $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
                 try
                 {

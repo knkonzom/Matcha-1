@@ -1,7 +1,7 @@
 <?php
 
     include '../config/database.php';
-    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
 
     $sql = "SELECT UsersId FROM users WHERE token = ? AND verified = '0' ";

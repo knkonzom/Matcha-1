@@ -14,7 +14,7 @@ else
         $unique_id = $_SESSION['userId'];
 
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
         
             $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
             $stmt = $conn->prepare($sql);
@@ -29,7 +29,7 @@ else
         $user_id = $_SESSION['userId'];
         
         include "config/database.php";
-         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+         $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
         try
         {
@@ -70,7 +70,7 @@ else
   <?php
         
         include "config/database.php";
-         $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+         $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
             try
             {
@@ -97,7 +97,7 @@ else
 ?>
 <?php
    include "config/database.php";
-   $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+   $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
 
  
@@ -195,7 +195,7 @@ else
         $unique_id = $_SESSION['userId'];
 
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
         
             $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
             $stmt = $conn->prepare($sql);

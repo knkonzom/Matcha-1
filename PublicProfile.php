@@ -9,7 +9,7 @@ function getCurrentUser() {
     $unique_id = $_SESSION['userId'];
 
     include "config/database.php";
-    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
     
         $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
         $stmt = $conn->prepare($sql);
@@ -25,7 +25,7 @@ function gender()
     $unique_id = $_SESSION['userId'];
 
     include "config/database.php";
-    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
 
     try
@@ -50,7 +50,7 @@ function gender()
         $unique_id = $_SESSION['userId'];
 
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
         try
         {
@@ -73,7 +73,7 @@ function gender()
         $user_id = $_SESSION['userUid'];
         $unique_id = $_SESSION['userId'];
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
         try
         {
@@ -96,7 +96,7 @@ function gender()
         $unique_id = $_SESSION['userId'];
 
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
     
         try
         {
@@ -118,7 +118,7 @@ function gender()
     {
         $id_user = $_SESSION['userId'];
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
         
             try
             {
@@ -157,7 +157,7 @@ function gender()
     <a class="active" href="UsersProfile.php">Edit Profile</a>
 <?php
    include "config/database.php";
-    $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
    $sql = "SELECT * FROM notification WHERE receiver_id = '{$_SESSION['userId']}' ";
    $stmt = $conn->prepare($sql);
@@ -169,7 +169,7 @@ function gender()
 
   <?php
             include "config/database.php";
-            $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+            $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
                 try
                 {

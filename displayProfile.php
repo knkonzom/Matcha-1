@@ -1,6 +1,6 @@
 <?php
 include "config/database.php";
-$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+$conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
 
 
@@ -25,7 +25,7 @@ if(isset($_POST['view']))
     //     $unique_id = $_SESSION['userId'];
     
     //     include "config/database.php";
-    //     $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+    //     $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
         
     //         $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
     //         $stmt = $conn->prepare($sql);
@@ -56,7 +56,7 @@ if(isset($_POST['view']))
     {
         $id_user = $_POST['pro_id'];
         include "config/database.php";
-        $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+        $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
         try
         {
@@ -94,7 +94,7 @@ if(isset($_POST['view']))
 
   <?php
             include "config/database.php";
-            $conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+            $conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
                 try
                 {
@@ -199,12 +199,12 @@ if(isset($_POST['view']))
 <?PHP
 
 include "config/database.php";
-$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+$conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
 $unique_id = $_SESSION['userId'];
     
 include "config/database.php";
-$conn = new PDO("mysql:host=$DB_DSN;dbname=matcha2", $DB_USER, $DB_PASSWORD);
+$conn = new PDO("mysql:host=$DB_DSN;dbname=Matcha", $DB_USER, $DB_PASSWORD);
 
     $sql = "SELECT username FROM profileupdate WHERE update_userId = '$unique_id' ";
     $stmt = $conn->prepare($sql);
